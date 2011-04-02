@@ -14,9 +14,40 @@ class Candidate
   property :target, Text, :required => true #target language, two letter google code
   property :created_at, DateTime
   
-  belongs_to :player, :required => false   #candidates can be created by players or guests    
+  belongs_to :player, :required => false   #candidates can be created by players or guests
+  has n, :chains    
 end
 
+class Chain
+  include DataMapper::Resource
+  property :id, Serial
+  property :progress, Integer, :default => 0 #this integer represents the chains progress, 0 - nothing submitted, 1 - L2 submitted, 2 - completed
+  belongs_to :candidate
+  has 1, :l1attempt
+  has 1, :l2attempt 
+end
+  
+
+class L2attempt
+  include DataMapper::Resource
+  property :sentence, Text
+  property :filled, Boolean, :default => false
+  property :recieved_at, DateTime
+  property :submitted_at, DateTime
+  
+  belongs_to :chain, :key => true
+  belongs_to :player
+end
+
+class L1attempt
+  include DataMapper::Resource
+  property :sentence, Text
+  property :recieved_at, DateTime
+  property :submitted_at, DateTime
+  
+  belongs_to :chain, :key => true
+  belongs_to :player
+end
 
 class Player
   include DataMapper::Resource
@@ -29,7 +60,9 @@ class Player
   property :mother_tongue, Text, :required => true #mother language, two letter google code
   property :joined_at, DateTime
   
-  has n, :candidates  
+  has n, :candidates
+  has n, :l1attempts
+  has n, :l2attempts  
 end
 
 DataMapper.finalize.auto_upgrade!
@@ -111,4 +144,28 @@ post '/login' do
   session[:player] = player.id if player
   redirect '/'
 end
+
+get '/new_chain' do
+  candidates = Candidate.all(:player.not => @player)
+  @candidate = candidates[rand(candidates.size)]
+  chain = Chain.create(:candidate => @candidate)
+  @l2attempt = L2attempt.create(:chain => chain, :player => @player, :recieved_at => Time.now)
+  chain.save
+  @l2attempt.save
+  @title = 'Your New Trans-mission'
+  erb :new_chain
+end
+
+post '/submit_l2' do
+  l2 = L2attempt.get(params[:chain].to_i)
+  l2.sentence = params[:sentence]
+  l2.save
+  redirect '/confirmation'
+end
+
+get '/confirmation' do
+  @title = 'Confirmation'
+  erb :confirmation
+end
+  
   
