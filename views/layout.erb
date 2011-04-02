@@ -1,0 +1,27 @@
+<!doctype html>  
+<html lang="en">  
+<head>  
+  <meta charset="utf8">  
+  <title><%= @title + ' | BABEL' %></title>  
+  <link href="/reset.css" rel="stylesheet">  
+  <link href="/style.css" rel="stylesheet">  
+</head>  
+<body>  
+  <header>  
+    <hgroup>
+	<img src="/babel.jpg" id = "logo">  
+      <h1><a href="/">The Tower of Babel</a></h1>  
+      <h2>'cause machines just can't translate </h2>
+  		<h3>Logged in as: <%= if @player then @player.name else 'guest' end%></h3>
+    </hgroup>  
+  </header>  
+  
+  <div id="main">  
+    <%= yield %>  
+  </div>  
+  
+  <footer>  
+    <p><small>An App for Collective Intelligence.</small></p>  
+  </footer>  
+</body>  
+</html>

@@ -1,0 +1,15 @@
+<% position = 1%>
+
+<% @top_ten.each do |p| %>    
+	<p>  
+      <%= position%>. <%= p.name %>  
+    </p>  
+    <p>  
+      Rank: <%= p.rank %> 
+    </p>
+	<p>  
+      Total Score: <%= p.total_score %> 
+    </p>
+    <p class="meta">Joined: <%= p.joined_at %></p>
+   <% position += 1%>
+<% end %>

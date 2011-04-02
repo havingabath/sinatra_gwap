@@ -1,0 +1,14 @@
+<% @sentences.each do |s| %>    
+    <article>
+	<p>  
+      <%= s.sentence %>  
+    </p>  
+    <p class = "lang_source">  
+      Source: <%= s.source%> 
+    </p>
+	<p class = "lang_target">  
+      Target: <%= s.target%> 
+    </p>
+    <p class="meta">Created by <%= s.player ? s.player.name : 'guest'  %> at <%= s.created_at %></p>  
+  </article>  
+<% end %>
