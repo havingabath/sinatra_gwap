@@ -1,0 +1,20 @@
+<p>Candidates in system:</p>
+<% @candidates.each do |can| %>    
+	<p>  
+      <%= can.id%> <%= can.sentence %> <%= can.player ? can.player.name : 'guest'  %> <%= can.source%> <%= can.target%>  <%= can.created_at %>
+    </p>  
+<% end %>
+</br></br>
+<p>Players in system:</p>
+<% @players.each do |p| %>    
+	<p>  
+      <%= p.id%> <%= p.name %>  <%= p.total_score%> <%= p.rank%> <%= p.mother_tongue%> <%= p.joined_at %>
+    </p>  
+<% end %>
+</br></br>
+<p>Chains in system:</p>
+<% @chains.each do |ch| %>    
+	<p>  
+      chain - <%= ch.id%>/ candidate -<%= ch.candidate.id%>/progress - <%= ch.progress %> / can - <%= ch.candidate.player.name%>/ L2 - <%= ch.l2attempt.player.name if ch.l2attempt%> / L1 - <%= ch.l1attempt.player.name if ch.l1attempt%>
+    </p>  
+<% end %>

@@ -5,6 +5,10 @@ require 'datamapper'
 DataMapper::Logger.new($stdout, :debug)
 DataMapper::setup(:default, "sqlite3://#{Dir.pwd}/babel.db")
 
+configure :test do
+  DataMapper.setup(:default, "sqlite::memory:")
+end
+
 #Candidates are the sentences used as inputs for the game
 class Candidate  
   include DataMapper::Resource  
@@ -21,7 +25,12 @@ end
 class Chain
   include DataMapper::Resource
   property :id, Serial
-  property :progress, Integer, :default => 0 #this integer represents the chains progress, 0 - nothing submitted, 1 - L2 submitted, 2 - completed
+  #progress integer represents the chain's progress, 
+  #0 - L2attempt dispatched 
+  #1 - L2attempt submitted
+  #2 - L1attempt dispatched
+  #3 - L2 attempt submitted - chain completed.
+  property :progress, Integer, :default => 0 
   belongs_to :candidate
   has 1, :l1attempt
   has 1, :l2attempt 
@@ -42,6 +51,7 @@ end
 class L1attempt
   include DataMapper::Resource
   property :sentence, Text
+  property :filled, Boolean, :default => false
   property :recieved_at, DateTime
   property :submitted_at, DateTime
   
@@ -98,6 +108,14 @@ post '/add_candidate' do
   redirect '/'  
 end
 
+get'/admin_data' do
+  @candidates = Candidate.all
+  @chains = Chain.all
+  @players = Player.all
+  @title = 'Admin data'
+  erb :admin_data
+end
+
 get '/display_all' do  
   @sentences = Candidate.all :order => :id.desc  
   @title = 'All Candidates'  
@@ -146,8 +164,19 @@ post '/login' do
 end
 
 get '/new_chain' do
+  #Do not use candidates the player entered
   candidates = Candidate.all(:player.not => @player)
-  @candidate = candidates[rand(candidates.size)]
+  
+  #Do not use candidates, on which the user previously initiated a chain
+  eligible_candidates = candidates.select do |can|
+                          inclusion = true
+                          can.chains.each do |ch|
+                            inclusion = false if ch.l2attempt.player == @player
+                          end
+                          inclusion
+                        end
+  
+  @candidate = eligible_candidates[rand(candidates.size)]
   chain = Chain.create(:candidate => @candidate)
   @l2attempt = L2attempt.create(:chain => chain, :player => @player, :recieved_at => Time.now)
   chain.save
@@ -159,6 +188,12 @@ end
 post '/submit_l2' do
   l2 = L2attempt.get(params[:chain].to_i)
   l2.sentence = params[:sentence]
+  
+  #TO DO - check_language -- use google language detect
+  
+  l2.filled = true
+  l2.submitted_at = Time.now
+  l2.chain.progress = 1         #stage L2 attempt filled
   l2.save
   redirect '/confirmation'
 end
@@ -167,5 +202,54 @@ get '/confirmation' do
   @title = 'Confirmation'
   erb :confirmation
 end
+
+get '/continue_chain' do
+  #find eligible chains, i.e. the logged-in player neither submitted candidate nor initiated the chain
+  candidates = Candidate.all(:player.not => @player)
+  chains = []
+  candidates.each do |can|
+    can.chains.each do |ch|
+      if ch.progress == 1 && ch.l2attempt.player != @player
+        chains << ch
+      end
+    end
+  end
+  
+  @chain = chains[rand(chains.size)]
+  @l1attempt = L1attempt.create(:chain => @chain, :player => @player, :recieved_at => Time.now)
+  @chain.progress = 2         #stage L1 attempt dispatched but unfilled
+  @chain.save
+  @title = 'Complete this Trans-mission'
+  erb :continue_chain
+end
+
+  
+
+post '/submit_l1' do
+  l1 = L1attempt.get(params[:chain].to_i)
+  l1.sentence = params[:sentence]
+  
+  #TO DO - check_language -- use google language detect
+  
+  l1.filled = true
+  l1.submitted_at = Time.now
+  l1.chain.progress = 3         #stage L1 attempt filled
+  l1.save
+  session[:chain] = params[:chain].to_i
+  redirect '/score_page'
+end
+
+get '/score_page' do
+  @chain = Chain.get(session[:chain])
+  session[:chain] = nil
+  @l2 = @chain.l2attempt
+  @l1 = @chain.l1attempt
+  @candidate = @chain.candidate
+  @title = 'Score Page' 
+  erb :score_page
+end
+
+
+  
   
   
