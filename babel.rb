@@ -1,6 +1,8 @@
 require 'rubygems'
 require 'sinatra'
 require 'datamapper'
+require 'rack-flash'
+use Rack::Flash
 
 DataMapper::Logger.new($stdout, :debug)
 DataMapper::setup(:default, "sqlite3://#{Dir.pwd}/babel.db")
@@ -66,13 +68,30 @@ class Player
   property :password, Text, :required => true
   property :email, Text, :required => true
   property :total_score, Integer, :default => 0
-  property :rank, Text, :default => 'slave'
   property :mother_tongue, Text, :required => true #mother language, two letter google code
   property :joined_at, DateTime
   
   has n, :candidates
   has n, :l1attempts
-  has n, :l2attempts  
+  has n, :l2attempts
+  
+  def rank
+    case self.total_score 
+    when 0..999
+      "slave"
+    when 1000..1999
+      "serf"
+    when 2000..2999
+      "architect"
+    when 3000..3999
+      "prince"
+    when 4000..4999
+      "king"
+    else
+      "God"
+    end
+  end
+  
 end
 
 DataMapper.finalize.auto_upgrade!
@@ -176,13 +195,18 @@ get '/new_chain' do
                           inclusion
                         end
   
-  @candidate = eligible_candidates[rand(candidates.size)]
-  chain = Chain.create(:candidate => @candidate)
-  @l2attempt = L2attempt.create(:chain => chain, :player => @player, :recieved_at => Time.now)
-  chain.save
-  @l2attempt.save
-  @title = 'Your New Trans-mission'
-  erb :new_chain
+  if eligible_candidates.empty?
+    @title = 'Lack of candidates in tower'
+    erb :apology
+  else
+    @candidate = eligible_candidates[rand(candidates.size)]
+    chain = Chain.create(:candidate => @candidate)
+    @l2attempt = L2attempt.create(:chain => chain, :player => @player, :recieved_at => Time.now)
+    chain.save
+    @l2attempt.save
+    @title = 'Your New Trans-mission'
+    erb :new_chain
+  end
 end
 
 post '/submit_l2' do
@@ -195,6 +219,7 @@ post '/submit_l2' do
   l2.submitted_at = Time.now
   l2.chain.progress = 1         #stage L2 attempt filled
   l2.save
+  flash[:notice] = "Your translation has been returned to the tower"
   redirect '/confirmation'
 end
 
@@ -215,12 +240,17 @@ get '/continue_chain' do
     end
   end
   
-  @chain = chains[rand(chains.size)]
-  @l1attempt = L1attempt.create(:chain => @chain, :player => @player, :recieved_at => Time.now)
-  @chain.progress = 2         #stage L1 attempt dispatched but unfilled
-  @chain.save
-  @title = 'Complete this Trans-mission'
-  erb :continue_chain
+  if chains.empty?
+    @title = 'Lack of chains in tower'
+    erb :apology
+  else
+    @chain = chains[rand(chains.size)]
+    @l1attempt = L1attempt.create(:chain => @chain, :player => @player, :recieved_at => Time.now)
+    @chain.progress = 2         #stage L1 attempt dispatched but unfilled
+    @chain.save
+    @title = 'Complete this Trans-mission'
+    erb :continue_chain
+  end
 end
 
   
