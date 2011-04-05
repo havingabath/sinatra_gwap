@@ -1,15 +1,20 @@
+#require gems
 require 'rubygems'
 require 'sinatra'
 require 'datamapper'
 require 'rack-flash'
 use Rack::Flash
 
+#Datamapper and DataBase setup
 DataMapper::Logger.new($stdout, :debug)
 DataMapper::setup(:default, "sqlite3://#{Dir.pwd}/babel.db")
 
 configure :test do
   DataMapper.setup(:default, "sqlite::memory:")
 end
+
+#require application files
+require 'chain_evaluator.rb'
 
 #Candidates are the sentences used as inputs for the game
 class Candidate  
@@ -64,9 +69,9 @@ end
 class Player
   include DataMapper::Resource
   property :id, Serial
-  property :name, Text, :required => true
-  property :password, Text, :required => true
-  property :email, Text, :required => true
+  property :name, Text, :required => true, :unique => true, :length => 1..20
+  property :password, Text, :required => true, :length => 6..20
+  property :email, Text, :required => true, :unique => true, :format => :email_address
   property :total_score, Integer, :default => 0
   property :mother_tongue, Text, :required => true #mother language, two letter google code
   property :joined_at, DateTime
@@ -92,7 +97,13 @@ class Player
     end
   end
   
+  def add_score score
+    self.total_score += score
+    self.save
+  end 
 end
+
+   
 
 DataMapper.finalize.auto_upgrade!
 
@@ -159,9 +170,14 @@ post '/register' do
   p.password = params[:password]
   p.mother_tongue = params[:mother_tongue]  
   p.joined_at = Time.now
-  p.save
-  session[:player] = p.id if p 
-  redirect '/'  
+  if p.save
+    session[:player] = p.id if p 
+    redirect '/'
+  else
+    @title = 'Registration Errors'
+    @errors = p.errors
+    erb :register
+  end  
 end
 
 get '/leaderboard' do
@@ -271,6 +287,9 @@ end
 
 get '/score_page' do
   @chain = Chain.get(session[:chain])
+  scorer = ChainEvaluator.new @chain
+  @score = scorer.mark
+  
   session[:chain] = nil
   @l2 = @chain.l2attempt
   @l1 = @chain.l1attempt

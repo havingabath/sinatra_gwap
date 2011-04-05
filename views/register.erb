@@ -1,3 +1,8 @@
+<% if @errors%>
+<% @errors.each do |er|%>
+<p><%= er%></p>
+<%end%>
+<%end%>
 <section>  
   <form action="/register" method="post">  
     <p><label for="name">Name</label> <input type="text" id="name" name="name" /></p>
