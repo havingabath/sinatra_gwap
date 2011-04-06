@@ -14,8 +14,10 @@ class ChainEvaluator
     @score += check_perfect #
     
     @chain.l1attempt.player.add_score @score 
-    @chain.l2attempt.player.add_score @score 
-    
+    @chain.l2attempt.player.add_score @score
+    @chain.score = @score
+    @chain.save
+        
     @score
   end
   

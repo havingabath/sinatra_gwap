@@ -1,14 +1,17 @@
-<% @sentences.each do |s| %>    
+<% @candidates.each do |can| %>    
     <article>
 	<p>  
-      <%= s.sentence %>  
+      <%= can.sentence %>  
     </p>  
     <p class = "lang_source">  
-      Source: <%= s.source%> 
+      Source: <%= can.source%>      Target: <%= can.target%> 
     </p>
-	<p class = "lang_target">  
-      Target: <%= s.target%> 
-    </p>
-    <p class="meta">Created by <%= s.player ? s.player.name : 'guest'  %> at <%= s.created_at %></p>  
+    <p class="meta">
+    	<% can.chains.each do |ch| %>
+			<%if ch.progress == 3%>
+				Score(<%=ch.score%>) - <%= ch.l2attempt.sentence %></br>
+			<% end %>
+		<% end %>
+    </p>  
   </article>  
 <% end %>

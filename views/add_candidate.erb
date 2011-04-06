@@ -1,6 +1,12 @@
+<% if @errors%>
+<% @errors.each do |er|%>
+<p><%= er%></p>
+<%end%>
+<%end%>
+<%value = @error_sentence.nil? ? 'placeholder="Your sentence&hellip;"' : "" %>
 <section id="add">  
   <form action="/add_candidate" method="post">  
-    <textarea name="sentence" placeholder="Your sentence&hellip;"></textarea>  
+    <textarea name="sentence" <%= value %>><%= @error_sentence if @error_sentence%></textarea>  
     <input type="submit" value="Send to Tower">
   	<label for="source">Source Language: </label>
 	<select name="source">
@@ -16,3 +22,4 @@
 	</select>
   </form>  
 </section>
+

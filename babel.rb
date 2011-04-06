@@ -1,9 +1,15 @@
-#require gems
+#require gems/libraries
 require 'rubygems'
 require 'sinatra'
 require 'datamapper'
+require 'json'
 require 'rack-flash'
+require 'net/http'
+require 'open-uri'
+require 'cgi'
 use Rack::Flash
+
+
 
 #Datamapper and DataBase setup
 DataMapper::Logger.new($stdout, :debug)
@@ -15,6 +21,7 @@ end
 
 #require application files
 require 'chain_evaluator.rb'
+require 'language_detector.rb'
 
 #Candidates are the sentences used as inputs for the game
 class Candidate  
@@ -37,7 +44,8 @@ class Chain
   #1 - L2attempt submitted
   #2 - L1attempt dispatched
   #3 - L2 attempt submitted - chain completed.
-  property :progress, Integer, :default => 0 
+  property :progress, Integer, :default => 0
+  property :score, Integer, :default => 0         #the score for the chain when completed 
   belongs_to :candidate
   has 1, :l1attempt
   has 1, :l2attempt 
@@ -123,19 +131,42 @@ get '/add_candidate' do
   erb :add_candidate  
 end
 
-post '/add_candidate' do  
-  s = Candidate.new  
-  s.sentence = params[:sentence]
-  s.source = params[:source]
-  s.target = params[:target]  
-  s.created_at = Time.now
-  if @player                    #if player is logged in save it to his candidates
-    @player.candidates << s
-    @player.save
-  else                          #if it is a guest, just save it
-    s.save 
-  end     
-  redirect '/'  
+post '/add_candidate' do
+  #validate the candidate sentence
+  @errors = []
+  if params[:sentence].empty?
+    @errors << "The sentence cannot be empty"
+  elsif params[:sentence].split.size < 3
+    @errors << "The sentence must contain at least three words"
+  end
+  if params[:source] == params[:target]
+    @errors << "The target language must be different from the source language"
+  end
+  
+  #ensure source language matches google language detect
+  sentence_inspect = LanguageDetector.new params[:sentence]
+  if sentence_inspect.language != params[:source]
+    @errors << "The sentence is not recognisable #{params[:source]}"
+  end
+  
+  unless @errors.empty?
+    @title = 'Candidate Errors'
+    @error_sentence = params[:sentence]
+    erb :add_candidate
+  else
+    s = Candidate.new  
+    s.sentence = params[:sentence]
+    s.source = params[:source]
+    s.target = params[:target]  
+    s.created_at = Time.now
+    if @player                    #if player is logged in save it to his candidates
+      @player.candidates << s
+      @player.save
+    else                          #if it is a guest, just save it
+      s.save 
+    end     
+    redirect '/'
+  end  
 end
 
 get'/admin_data' do
@@ -146,14 +177,8 @@ get'/admin_data' do
   erb :admin_data
 end
 
-get '/display_all' do  
-  @sentences = Candidate.all :order => :id.desc  
-  @title = 'All Candidates'  
-  erb :display  
-end
-
 get '/display' do
-  @sentences = Candidate.all(:player => @player, :order => :created_at.desc)
+  @candidates = Candidate.all(:player => @player, :order => :created_at.desc)
   @title = "#{@player.name}'s Candidates"
   erb :display
 end
@@ -211,32 +236,49 @@ get '/new_chain' do
                           inclusion
                         end
   
-  if eligible_candidates.empty?
+  if (@candidate = eligible_candidates[rand(eligible_candidates.size)])
+      chain = Chain.create(:candidate => @candidate)
+      @l2attempt = L2attempt.create(:chain => chain, :player => @player, :recieved_at => Time.now)
+      chain.save
+      @l2attempt.save
+      @title = 'Your New Trans-mission'
+      erb :new_chain
+  else
     @title = 'Lack of candidates in tower'
     erb :apology
-  else
-    @candidate = eligible_candidates[rand(candidates.size)]
-    chain = Chain.create(:candidate => @candidate)
-    @l2attempt = L2attempt.create(:chain => chain, :player => @player, :recieved_at => Time.now)
-    chain.save
-    @l2attempt.save
-    @title = 'Your New Trans-mission'
-    erb :new_chain
   end
 end
 
 post '/submit_l2' do
+  chain = Chain.get(params[:chain].to_i)
   l2 = L2attempt.get(params[:chain].to_i)
-  l2.sentence = params[:sentence]
   
   #TO DO - check_language -- use google language detect
+  sentence_inspect = LanguageDetector.new params[:sentence]
   
-  l2.filled = true
-  l2.submitted_at = Time.now
-  l2.chain.progress = 1         #stage L2 attempt filled
-  l2.save
-  flash[:notice] = "Your translation has been returned to the tower"
-  redirect '/confirmation'
+  #if they are trying to cheat by using the same language
+  if sentence_inspect.language == chain.candidate.source && sentence_inspect.confidence > 0.4 
+    #penalise them and inform them of this
+    @title = 'Penalty'
+    l2.destroy
+    chain.destroy
+    erb :penalty
+  elsif sentence_inspect.language != chain.candidate.target
+    #don't penalise them but inform them the submission is unacceptable as language is not recognised target
+    @title = 'Your New Trans-mission'
+    @l2attempt = l2
+    @candidate = chain.candidate
+    flash[:notice] = "Your sentence was not recoginsed as #{chain.candidate.target}"
+    erb :new_chain
+  else  
+    l2.sentence = params[:sentence]
+    l2.filled = true
+    l2.submitted_at = Time.now
+    l2.chain.progress = 1         #stage L2 attempt filled
+    l2.save
+    flash[:notice] = "Your translation has been returned to the tower"
+    redirect '/confirmation'
+  end
 end
 
 get '/confirmation' do
