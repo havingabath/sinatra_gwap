@@ -14,8 +14,17 @@
       <h2>'cause machines just can't translate </h2>
   		<h3>Logged in as: <%= if @player then @player.name else 'guest' end%></h3>
     </hgroup>  
-  </header>  
-  
+  </header>
+  <div id="links">
+  	<%= link_to '/','Home', {:class=>'link',:id=>'home_link'} %>
+	<%= link_to '/register','Register', {:class=>'link'} %>
+	<%= link_to '/login','Log in', {:class=>'link'} %>
+	<%= link_to '/add_candidate','Add Candidate', {:class=>'link'} %>
+	<%= link_to '/display','My Candidates', {:class=>'link'} %>
+	<%= link_to '/new_chain','Start Chain', {:class=>'link'} %>
+	<%= link_to '/continue_chain','Continue Chain', {:class=>'link'} %>
+	<%= link_to '/leaderboard','Leader board', {:class=>'link'} %>
+  </div>
   <div id="main">  
     <%= yield %>  
   </div>  

@@ -22,6 +22,8 @@ end
 #require application files
 require 'chain_evaluator.rb'
 require 'language_detector.rb'
+require 'deletion.rb'
+require 'helper.rb'
 
 #Candidates are the sentences used as inputs for the game
 class Candidate  
@@ -33,7 +35,26 @@ class Candidate
   property :created_at, DateTime
   
   belongs_to :player, :required => false   #candidates can be created by players or guests
-  has n, :chains    
+  has n, :chains
+  
+  def lang lang_code
+    case lang_code
+    when 'en'
+      'English'
+    when 'es'
+      'Spanish'
+    when 'ga'
+      'Irish'
+    end
+  end
+    
+  def source_language
+    lang self.source
+  end
+  
+  def target_language
+    lang self.target
+  end  
 end
 
 class Chain
@@ -260,6 +281,10 @@ post '/submit_l2' do
   if sentence_inspect.language == chain.candidate.source && sentence_inspect.confidence > 0.4 
     #penalise them and inform them of this
     @title = 'Penalty'
+    @player = l2.player
+    @penalty = @player.total_score / 10
+    @player.total_score -= @penalty
+    @player.save 
     l2.destroy
     chain.destroy
     erb :penalty
@@ -268,7 +293,7 @@ post '/submit_l2' do
     @title = 'Your New Trans-mission'
     @l2attempt = l2
     @candidate = chain.candidate
-    flash[:notice] = "Your sentence was not recoginsed as #{chain.candidate.target}"
+    flash[:notice] = "Your sentence was not recoginsed as #{chain.candidate.target_language}"
     erb :new_chain
   else  
     l2.sentence = params[:sentence]
