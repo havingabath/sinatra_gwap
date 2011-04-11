@@ -130,6 +130,10 @@ p {
 	
 }
 
+.machine{
+	color: #8B0000;
+}
+
 #logo {
 	display: block;
 	padding-top: 10px;

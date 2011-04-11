@@ -11,8 +11,12 @@
     <hgroup>
 	<img src="/babel.jpg" id = "logo">  
       <h1><a href="/">The Tower of Babel</a></h1>  
-      <h2>'cause machines just can't translate </h2>
-  		<h3>Logged in as: <%= if @player then @player.name else 'guest' end%></h3>
+      <h2>'cause machines just can't translate</h2>
+		<% if @player then %>
+  		<h3>Logged in as: <%= @player.name %></h3>
+		<% else %>
+		<h3>You are not Logged in: <%= link_to '/login','Log in', {:class=>'link'} %></h3>
+		<% end %>
     </hgroup>  
   </header>
   <div id="links">
