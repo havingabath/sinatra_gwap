@@ -9,26 +9,35 @@
 <body>  
   <header>  
     <hgroup>
-	<img src="/babel.jpg" id = "logo">  
+	<img src="/tower2.jpg" id = "logo">  
       <h1><a href="/">The Tower of Babel</a></h1>  
       <h2>'cause machines just can't translate</h2>
 		<% if @player then %>
-  		<h3>Logged in as: <%= @player.name %></h3>
+  		<h3>Logged in as: <%= @player.name %> </t> <%= link_to '/logout','Log Out', {:class=>'link'} %></h3>
 		<% else %>
 		<h3>You are not Logged in: <%= link_to '/login','Log in', {:class=>'link'} %></h3>
 		<% end %>
     </hgroup>  
-  </header>
-  <div id="links">
-  	<%= link_to '/','Home', {:class=>'link',:id=>'home_link'} %>
-	<%= link_to '/register','Register', {:class=>'link'} %>
-	<%= link_to '/login','Log in', {:class=>'link'} %>
-	<%= link_to '/add_candidate','Add Candidate', {:class=>'link'} %>
-	<%= link_to '/display','My Candidates', {:class=>'link'} %>
-	<%= link_to '/new_chain','Start Chain', {:class=>'link'} %>
-	<%= link_to '/continue_chain','Continue Chain', {:class=>'link'} %>
-	<%= link_to '/leaderboard','Leader board', {:class=>'link'} %>
-  </div>
+  
+ 	<div id="general_links">
+	<ul id="navlist">
+  		<li><%= link_to '/','Home', {:class=>'link',:id=>'home_link'} %></li>
+		<li><%= link_to '/register','Register', {:class=>'link'} %></li>
+		<li><%= link_to '/about','How to play', {:class=>'link'} %></li>
+		<li><%= link_to '/leaderboard','Leader board', {:class=>'link'} %></li>
+		<li><%= link_to '/add_candidate','Add Candidate', {:class=>'link'} %></li>
+	</ul>
+	</div>
+	<div id="member_links">
+	<ul>
+		<li><%= link_to '/display_candidates','My Candidates', {:class=>'link'} %></li>
+		<li><%= link_to '/display_chains','My Active Chains', {:class=>'link'} %></li>
+		<li><%= link_to '/new_chain','Start Chain', {:class=>'link'} %></li>
+		<li><%= link_to '/continue_chain','Continue Chain', {:class=>'link'} %></li>
+		<li><%= link_to '/display_scorecards','My Score Cards', {:class=>'link'} %></li>
+	</ul>
+  	</div>
+</header>
   <div id="main">  
     <%= yield %>  
   </div>  

@@ -1,0 +1,18 @@
+<div id="active_chains">
+Your currently active chains are as follows. Please click the link to make an entry:
+<ul>
+<% @active_l2attempts.each do |l2| %>
+<li>
+<a href="/new_chain/<%=l2.chain.id%>"> Chain <%=l2.chain.id %></a> Sentence: <%= l2.chain.candidate.sentence%> Active since: <%= l2.recieved_at%>
+</li>
+<% end %>
+</ul>
+
+<ul>
+<% @active_l1attempts.each do |l1| %>
+<li>
+<a href="/continue_chain/<%=l1.chain.id%>"> Chain <%=l1.chain.id %></a> Sentence: <%= l1.chain.l2attempt.sentence%> Active since: <%= l1.recieved_at%>
+</li>
+<% end %>
+</ul>
+</div>

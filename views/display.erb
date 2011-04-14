@@ -7,11 +7,16 @@
       Source: <%= can.source_language%>      Target: <%= can.target_language%> 
     </p>
     <p class="meta">
-    	<% can.chains.each do |ch| %>
-			<%if ch.progress == 3%>
+	<%
+	chains = can.chains.select {|ch| ch.progress == 3}
+	chains.sort! {|ch1, ch2| ch2.score <=> ch1.score}
+	%>
+    	<% chains[0..2].each do |ch| %>
 				Score(<%=ch.score%>) - <%= ch.l2attempt.sentence %></br>
-			<% end %>
 		<% end %>
     </p>  
   </article>  
 <% end %>
+
+
+

@@ -4,7 +4,7 @@
 <%end%>
 <%end%>
 <%value = @error_sentence.nil? ? 'placeholder="Your sentence&hellip;"' : "" %>
-<section id="add">  
+<section id="input_section">  
   <form action="/add_candidate" method="post">  
     <textarea name="sentence" <%= value %>><%= @error_sentence if @error_sentence%></textarea>  
     <input type="submit" value="Send to Tower">

@@ -1,3 +1,4 @@
+#this class is in charge of the scoring algorithm and the creation of scorecards
 class ChainEvaluator
   def initialize chain
     @chain = chain
@@ -23,24 +24,85 @@ class ChainEvaluator
     @score += check_word_order @submission #
     @score += check_versus_machine #
     @score += check_perfect #
+    calculate_time_bonuses
     write_results
     @score
   end
   
+  def calculate_time_bonuses
+    @l1time = (@chain.l1attempt.submitted_at) - (@chain.l1attempt.recieved_at)
+    @l2time = (@chain.l2attempt.submitted_at) - (@chain.l2attempt.recieved_at)
+    
+    case @l1time 
+      when 0..30
+        @l1bonus = 0.5
+        @l1bonus_text = "<p>You took #{@l1time} seconds. Time Bonus of 50 %</p>"
+      when 31..60
+        @l1bonus = 0.4
+        @l1bonus_text = "<p>You took #{@l1time} seconds. Time Bonus of 40 %</p>"
+      when 61..120
+        @l1bonus = 0.3
+        @l1bonus_text = "<p>You took #{@l1time} seconds. Time Bonus of 30 %</p>"
+      when 121..300
+        @l1bonus = 0.2
+        @l1bonus_text = "<p>You took #{@l1time} seconds. Time Bonus of 20 %</p>"
+      when 301..600
+        @l1bonus = 0.1
+        @l1bonus_text = "<p>You took #{@l1time} seconds. Time Bonus of 10 %</p>"
+      when 601..1800
+        @l1bonus = 0.05
+        @l1bonus_text = "<p>You took #{@l1time} seconds. Time Bonus of 5 %</p>"
+      else
+        @l1bonus = 0
+        @l1bonus_text = "<p>You took #{@l1time} seconds. No time bonus</p>"
+      end
+      
+      case @l2time 
+        when 0..30
+          @l2bonus = 0.5
+          @l2bonus_text = "<p>You took #{@l2time} seconds. Time Bonus of 50 %</p>"
+        when 31..60
+          @l2bonus = 0.4
+          @l2bonus_text = "<p>You took #{@l2time} seconds. Time Bonus of 40 %</p>"
+        when 61..120
+          @l2bonus = 0.3
+          @l2bonus_text = "<p>You took #{@l2time} seconds. Time Bonus of 30 %</p>"
+        when 121..300
+          @l2bonus = 0.2
+          @l2bonus_text = "<p>You took #{@l2time} seconds. Time Bonus of 20 %</p>"
+        when 301..600
+          @l2bonus = 0.1
+          @l2bonus_text = "<p>You took #{@l2time} seconds. Time Bonus of 10 %</p>"
+        when 601..1800
+          @l2bonus = 0.05
+          @l2bonus_text = "<p>You took #{@l2time} seconds. Time Bonus of 5 %</p>"
+        else
+          @l2bonus = 0
+          @l2bonus_text = "<p>You took #{@l2time} seconds. No time bonus</p>"
+        end
+  end
+  
   def write_results
-      @chain.l1attempt.player.add_score @score 
-      @chain.l2attempt.player.add_score @score
       @chain.score = @score
       @chain.save
-
-      @score_card << "<p>TOTAL SCORE FOR CHAIN: #{@score} points</p></div>"
+      @score_card << "<p>TOTAL SCORE FOR CHAIN: #{@score} points</p>"
+    
+      l1_total = (@score * (1 + @l1bonus)).to_i
+      @chain.l1attempt.player.add_score l1_total 
       @sc1 = Scorecard.new
-      @sc2 = Scorecard.new
-      @sc1.report = @sc2.report = @score_card
-      @sc1.chain = @sc2.chain = @chain
+      @sc1.report = @score_card + @l1bonus_text + "<p>Grand Total: #{l1_total} pts </p></div>"
+      @sc1.chain = @chain
+      @sc1.created_at = Time.now
       @sc1.player = @chain.l1attempt.player
-      @sc2.player = @chain.l2attempt.player
       @sc1.save
+     
+      l2_total = (@score * (1 + @l2bonus)).to_i
+      @chain.l2attempt.player.add_score l2_total
+      @sc2 = Scorecard.new
+      @sc2.report = @score_card + @l2bonus_text + "<p>Grand Total: #{l2_total} pts </p></div>"
+      @sc2.chain = @chain
+      @sc2.created_at = Time.now
+      @sc2.player = @chain.l2attempt.player
       @sc2.save
   end
   

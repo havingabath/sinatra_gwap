@@ -20,7 +20,7 @@ class LanguageDetector
   end
   
   def is_reliable?
-    @is_relaible
+    @is_reliable
   end
 end
   

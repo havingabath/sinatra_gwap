@@ -18,3 +18,10 @@
       chain - <%= ch.id%>/ candidate -<%= ch.candidate.id%>/progress - <%= ch.progress %> / can - <%= ch.candidate.player.name%>/ L2 - <%= ch.l2attempt.player.name if ch.l2attempt%> / L1 - <%= ch.l1attempt.player.name if ch.l1attempt%> <%= ch.score%>
     </p>  
 <% end %>
+</br></br>
+<p>Scorecards in system:</p>
+<% @score_cards.each do |sc| %>    
+	<p>  
+      <%= sc.id%> <%= sc.player.name %>  <%= sc.chain.id%>  <%= sc.viewed%> <%= sc.created_at %>
+    </p>  
+<% end %>

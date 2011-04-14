@@ -1,6 +1,6 @@
 body {  
     margin: 35px auto;  
-    width: 640px;  
+    width: 640px; 
 }  
   
 header {  
@@ -10,7 +10,8 @@ header {
   
 header h1 {  
     display: inline;  
-    font-size: 32px;  
+    font-size: 32px;
+ 	font-family: 'Bookman Old Style', serif;
 }  
   
 header h1 a:link, header h1 a:visited {  
@@ -33,18 +34,18 @@ header h3 {
     margin: 0 0 20px;  
 }  
   
-#add {  
+#input_section {  
     margin: 0 0 20px;  
 }  
   
-#add textarea {  
+#input_section textarea {  
     height: 30px;  
     width: 500px;  
     padding: 10px;  
     border: 1px solid #ddd;  
 }  
   
-#add input {  
+#input_section input {  
     height: 50px;  
     width: 110px;  
     margin: -50px 0 0;  
@@ -147,3 +148,34 @@ p {
 	padding-left: 30px;
 	
 }
+
+#input_sentence{
+	font-size: 1.5em;
+}
+
+#intro{
+	font-family: 'Bookman Old Style', serif;
+	font-size: 1.5em;
+	text-align: center;
+	font-weight: 300
+}
+
+
+#general_links li
+{
+display: inline;
+list-style-type: none;
+padding-right: 20px;
+}
+
+
+#member_links li
+{
+display: inline;
+list-style-type: none;
+padding-right: 20px;
+}
+
+
+
+

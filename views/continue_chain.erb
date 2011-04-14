@@ -1,8 +1,12 @@
+<div id='flash' class='notice'>
+  <%= flash[:notice] %>
+</div>
 <p>You must translate the following from <%= @chain.candidate.target_language%> to <%= @chain.candidate.source_language%></p>
-<p><%= @chain.l2attempt.sentence%></p>
- 
+<p id = "input_sentence"><%= @chain.l2attempt.sentence%></p>
+<section id="input_section">
   <form action="/submit_l1" method="post">
 	<input type="hidden" name="chain" value= "<%= @l1attempt.chain.id%>" >  
     <textarea name="sentence" placeholder="Your translation&hellip;"></textarea>  
-    <input type="submit" value="Return to Tower">
+    <input type="submit" value="Send to Tower">
   </form>
+</section>

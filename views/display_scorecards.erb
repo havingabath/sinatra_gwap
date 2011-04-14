@@ -1,0 +1,22 @@
+<div id="unviewed_sc">
+Unviewed
+<ul>
+<% @unviewed_score_cards.each do |sc| %>
+<li>
+<a href="/scorecard/<%=sc.id%>"> Score Card <%=sc.id %></a> Score: <%= sc.chain.score%> Date: <%= sc.created_at.day%>/<%= sc.created_at.month%>/<%= sc.created_at.year%>
+</li>
+<% end %>
+</ul>
+</div>
+
+<div id="viewed_sc">
+Previously Viewed
+<ul>
+<% @viewed_score_cards.each do |sc| %>
+<li>
+<a href="/scorecard/<%=sc.id%>"> Score Card <%=sc.id %></a> Score: <%= sc.chain.score%> Date: <%= sc.created_at.day%>/<%= sc.created_at.month%>/<%= sc.created_at.year%>
+</li>
+<% end %>
+</ul>
+</div>
+
