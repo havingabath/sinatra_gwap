@@ -7,7 +7,7 @@ gem 'rack-flash'
 gem 'crack'
 gem 'httparty'
 gem 'to_lang'
-gem 'dm-mysql-adapter'
+gem 'dm-sqlite-adapter'
 
 
 group :test do
