@@ -13,7 +13,7 @@ ToLang.start('AIzaSyBspFjGG3EQNn3C_6ZQCDTsUEj7xHTrCMA')
 
 #Datamapper and DataBase setup
 DataMapper::Logger.new($stdout, :debug)
-DataMapper::setup(:default, "sqlite3://#{Dir.pwd}/babel.db")
+DataMapper.setup(:default, ENV['DATABASE_URL'] || "sqlite3://#{Dir.pwd}/development.db")
 
 configure :test do
   DataMapper.setup(:default, "sqlite::memory:")
