@@ -16,3 +16,13 @@ get '/chain/:id/delete' do
   chain.destroy if chain  
   redirect '/admin_data'  
 end
+
+
+get '/clear_db' do
+  Player.destroy
+  L1Attempt.destroy
+  L2Attempt.destroy
+  Chain.destroy
+  Candidate.destroy
+  Scorecard.destroy
+end
