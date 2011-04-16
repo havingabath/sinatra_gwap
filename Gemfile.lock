@@ -83,7 +83,7 @@ DEPENDENCIES
   crack
   datamapper
   dm-sqlite-adapter
-  httparty
+  httparty (= 0.7.4)
   json
   rack-flash
   rack-test
