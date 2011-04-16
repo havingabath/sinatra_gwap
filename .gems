@@ -3,5 +3,6 @@ dm-sqlite-adapter
 datamapper
 rack-flash
 json
+crack
 httparty
 to_lang
