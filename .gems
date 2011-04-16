@@ -1,4 +1,5 @@
 sinatra
+dm-postgres-adapter
 dm-sqlite-adapter
 datamapper
 rack-flash
