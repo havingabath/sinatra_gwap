@@ -3,4 +3,5 @@ dm-sqlite-adapter
 datamapper
 rack-flash
 json
+httparty
 to_lang

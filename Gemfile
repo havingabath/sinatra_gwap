@@ -5,6 +5,7 @@ gem 'dm-sqlite-adapter'
 gem 'datamapper'
 gem	'rack-flash'
 gem 'json'
+gem 'httparty'
 gem 'to_lang'
 
 
