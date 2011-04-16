@@ -1,0 +1,6 @@
+sinatra
+dm-sqlite-adapter
+datamapper
+rack-flash
+json
+to_lang

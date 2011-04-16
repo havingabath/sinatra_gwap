@@ -1,5 +1,6 @@
 <div id="unviewed_sc">
-Unviewed
+<% if @unviewed_score_cards.size > 0 %>
+<h3>You have not viewed these:</h3>
 <ul>
 <% @unviewed_score_cards.each do |sc| %>
 <li>
@@ -7,10 +8,13 @@ Unviewed
 </li>
 <% end %>
 </ul>
+<%end%>
 </div>
 
+
 <div id="viewed_sc">
-Previously Viewed
+<% if @viewed_score_cards.size > 0 %>
+<h3>Previously Viewed</h3>
 <ul>
 <% @viewed_score_cards.each do |sc| %>
 <li>
@@ -18,5 +22,9 @@ Previously Viewed
 </li>
 <% end %>
 </ul>
+<% end %>
+<% if !(@viewed_score_cards.size > 0) && !(@unviewed_score_cards.size > 0) %>
+<h3>You do not have any scorecards yet, get translating!</h3>
+<%end%>
 </div>
 

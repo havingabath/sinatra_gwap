@@ -1,6 +1,6 @@
 <% if @errors%>
 <% @errors.each do |er|%>
-<p><%= er%></p>
+<p><span class='notice'><%= er%></span></p>
 <%end%>
 <%end%>
 <%value = @error_sentence.nil? ? 'placeholder="Your sentence&hellip;"' : "" %>

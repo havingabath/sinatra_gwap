@@ -1,9 +1,10 @@
 <div id="active_chains">
+<% if @active_l2attempts.size > 0 || @active_l1attempts.size > 0 %>
 Your currently active chains are as follows. Please click the link to make an entry:
 <ul>
 <% @active_l2attempts.each do |l2| %>
 <li>
-<a href="/new_chain/<%=l2.chain.id%>"> Chain <%=l2.chain.id %></a> Sentence: <%= l2.chain.candidate.sentence%> Active since: <%= l2.recieved_at%>
+<a href="/new_chain/<%=l2.chain.id%>"><%= l2.chain.candidate.sentence%></a> - <%= l2.chain.candidate.source_language%> to <%= l2.chain.candidate.target_language%> - Active since: <%= l2.recieved_at.hour%>:<%= l2.recieved_at.min%> <%= l2.recieved_at.day%>/<%= l2.recieved_at.month%>/<%= l2.recieved_at.year%> 
 </li>
 <% end %>
 </ul>
@@ -11,8 +12,11 @@ Your currently active chains are as follows. Please click the link to make an en
 <ul>
 <% @active_l1attempts.each do |l1| %>
 <li>
-<a href="/continue_chain/<%=l1.chain.id%>"> Chain <%=l1.chain.id %></a> Sentence: <%= l1.chain.l2attempt.sentence%> Active since: <%= l1.recieved_at%>
+<a href="/continue_chain/<%=l1.chain.id%>"><%= l1.chain.l2attempt.sentence%></a> - <%= l1.chain.candidate.target_language%> to <%= l1.chain.candidate.source_language%> - Active since: <%= l1.recieved_at.hour%>:<%= l1.recieved_at.min%> <%= l1.recieved_at.day%>/<%= l1.recieved_at.month%>/<%= l1.recieved_at.year%> 
 </li>
 <% end %>
 </ul>
+<%else%>
+You do not currently have any active chains.
+<%end%>
 </div>

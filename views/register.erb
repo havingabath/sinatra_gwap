@@ -1,6 +1,6 @@
 <% if @errors%>
 <% @errors.each do |er|%>
-<p><%= er%></p>
+<p><span class='notice'><%= er%></span></p>
 <%end%>
 <%end%>
 <section class="info_form">  
@@ -10,10 +10,10 @@
 	<p><label for="password">Password</label> <input type="password" id="password" name="password" /></p>
 	<p><label for="confirm">Confirm</label> <input type="password" id="confirm" name="confirm" /></p>
   	<p>Select your languages (minimum of 2):</p>
-	<p class="lang_check">English<input type="checkbox" name="lang" value="en"></p>
-	<p class="lang_check">Spanish<input type="checkbox" name="lang" value="es"></p>
-	<p class="lang_check">Irish<input type="checkbox" name="lang" value="ga"></p>
-	<p class="lang_check">French<input type="checkbox" name="lang" value="fr"></p>
+	<p class="lang_check">English<input type="checkbox" name="en_lang" value="en"></p>
+	<p class="lang_check">Spanish<input type="checkbox" name="es_lang" value="es"></p>
+	<p class="lang_check">Irish<input type="checkbox" name="ga_lang" value="ga"></p>
+	<p class="lang_check">French<input type="checkbox" name="fr_lang" value="fr"></p>
 	<p ><input type="submit" value="Register" id="register" class="round"/></p>
   </form>  
 </section>

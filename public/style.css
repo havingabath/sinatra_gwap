@@ -12,10 +12,7 @@ footer{
 	clear:both;
 }
 
-h4{
-	display: inline;
-	text-align: center;
-}
+
   
 header h1 {  
     display: inline;  
@@ -279,6 +276,100 @@ p {
 	color: #D1030E;
 	
 }
+
+#score_card{
+	
+	
+}
+
+#score_card h2{
+	font-size: 1.2em;
+	font-weight: 600;
+	color: #D1030E;
+	
+}
+
+.machine h4{
+	font-size: 0.9em;
+	font-weight: 500;
+	color: #D1030E;
+	
+}
+
+.machine h5{
+	font-size: 0.9em;
+	font-weight: 500;
+	
+}
+
+h5{
+	display: inline;
+	color: #D1030E;
+	
+}
+
+h4{
+	font-size: 1.2em;
+	font-weight: 500;
+	color: #3232A0;
+	
+}
+
+#p1{
+	font-size: 1.1em;
+	font-weight: 500;
+	color: #7D0009;
+}
+
+#p1text{
+	font-size: 1.1em;
+	font-weight: 500;
+	color: #022F52;
+}
+
+#p2{
+	font-size: 1.1em;
+	font-weight: 500;
+	color: #9A333B;
+}
+
+#p2text{
+	font-size: 1.1em;
+	font-weight: 500;
+	color: #264A66;
+}
+
+#p3{
+	font-size: 1.1em;
+	font-weight: 500;
+	color: #E50212;
+}
+
+#p3text{
+	font-size: 1.1em;
+	font-weight: 500;
+	color: #0B5A97;
+}
+
+#total{
+	font-size: 1.5em;
+	color: #D1030E;
+	font-weight: 500;
+	
+}
+
+#bonus{
+	font-size: 1.3em;
+	color: #3232A0;
+	
+}
+
+.notice{
+	color: #D1030E;
+	font-weight: 500;
+}
+
+
 
 
 ul#main-nav {margin:0;padding:0px;float:left;width:100%;font-size:0.9em;position:absolute;}

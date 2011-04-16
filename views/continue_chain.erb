@@ -1,5 +1,5 @@
 <div id='flash' class='notice'>
-  <%= flash[:notice] %>
+  <span class='notice'><%= flash[:notice] %></span>
 </div>
 <p>You must translate the following from <span class="lang_target"><%= @chain.candidate.target_language%></span> to <span class="lang_source"><%= @chain.candidate.source_language%></p></span>
 <p id = "input_sentence"><%= @chain.l2attempt.sentence%></p>

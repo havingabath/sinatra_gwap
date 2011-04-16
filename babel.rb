@@ -97,13 +97,24 @@ class Player
   property :password, Text, :required => true, :length => 6..20
   property :email, Text, :required => true, :unique => true, :format => :email_address
   property :total_score, Integer, :default => 0
-  property :mother_tongue, Text, :required => true #mother language, two letter google code
+  property :languages, Flag[ :en, :es, :ga, :fr ]
   property :joined_at, DateTime
+  validates_with_method :check_lang_number
   
   has n, :candidates
   has n, :l1attempts
   has n, :l2attempts
   has n, :scorecards
+  
+  def check_lang_number
+    num = self.languages.size
+    
+    if num >= 2
+      return true
+    else
+      [false, "You must select at least 2 languages"]
+    end
+  end
   
   #rank the player is at based on their current score
   def rank
@@ -132,6 +143,10 @@ class Player
     activel2s = self.l2attempts.select{|l2| l2.chain.progress == 0}
     activel1s = self.l1attempts.select{|l1| l1.chain.progress == 2}
     activel1s.size + activel2s.size
+  end
+  
+  def speaks? lang
+    self.languages.include?(lang.to_sym)
   end
 end
 
@@ -231,7 +246,28 @@ post '/register' do
   p.name = params[:name]
   p.email = params[:email]
   p.password = params[:password]
-  p.mother_tongue = params[:mother_tongue]  
+  
+  languages = []
+  if params[:en_lang]
+    languages << :en
+  end
+  
+  if params[:es_lang]
+    languages << :es
+  end
+  
+  if params[:ga_lang]
+    languages << :ga
+  end
+  
+  if params[:fr_lang]
+    languages << :fr
+  end
+  
+  
+  p.languages = languages
+  
+    
   p.joined_at = Time.now
   if p.save
     session[:player] = p.id if p 
@@ -292,9 +328,14 @@ get '/new_chain' do
     else
       #Do not use candidates the player entered
       candidates = Candidate.all(:player.not => @player)
-  
+      
+      #only use candidates which the player speaks both languages
+      suitable_candidates = candidates.select do |can|
+                              @player.speaks?(can.source) && @player.speaks?(can.target)
+                            end
+                                
       #Do not use candidates, on which the user previously initiated a chain
-      eligible_candidates = candidates.select do |can|
+      eligible_candidates = suitable_candidates.select do |can|
                               inclusion = true
                               can.chains.each do |ch|
                                 inclusion = false if ch.l2attempt.player == @player
@@ -368,12 +409,15 @@ get '/continue_chain' do
     erb :not_logged_in
   else
     #find eligible chains, i.e. the logged-in player neither submitted candidate nor initiated the chain
+    #the chains are at the right stage in progress, and the player speaks both target and source languages
     candidates = Candidate.all(:player.not => @player)
     chains = []
     candidates.each do |can|
       can.chains.each do |ch|
         if ch.progress == 1 && ch.l2attempt.player != @player
-          chains << ch
+          if @player.speaks?(can.source) && @player.speaks?(can.target)
+            chains << ch
+          end
         end
       end
     end

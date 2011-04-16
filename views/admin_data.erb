@@ -8,7 +8,7 @@
 <p>Players in system:</p>
 <% @players.each do |p| %>    
 	<p>  
-      <%= p.id%> <%= p.name %>  <%= p.total_score%> <%= p.rank%> <%= p.mother_tongue%> <%= p.joined_at %>
+      <%= p.id%> <%= p.name %>  <%= p.total_score%> <%= p.rank%> <%= p.joined_at %> <%= p.languages.to_s%>
     </p>  
 <% end %>
 </br></br>
