@@ -13,4 +13,8 @@ gem 'dm-sqlite-adapter'
 group :test do
 	gem 'rspec'
 	gem 'rack-test'
-end 
+end
+
+group :production do
+ 	gem 'dm-postgres-adapter'
+end
