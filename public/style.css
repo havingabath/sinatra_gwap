@@ -1,12 +1,21 @@
 body {  
     margin: 35px auto;  
-    width: 640px; 
+    width: 635px; 
 }  
   
 header {  
     text-align: center;  
-    margin: 0 0 20px;  
-}  
+    margin: 0 0 20px;
+}
+
+footer{
+	clear:both;
+}
+
+h4{
+	display: inline;
+	text-align: center;
+}
   
 header h1 {  
     display: inline;  
@@ -27,11 +36,12 @@ header h2 {
 
 header h3 {
 	font-size: 12px;
-	color: #8B0000;
+	color: #773438;
 }
   
 #main {  
-    margin: 0 0 20px;  
+    margin: 0 0 20px;
+  	padding-top: 35px;
 }  
   
 #input_section {  
@@ -47,13 +57,19 @@ header h3 {
   
 #input_section input {  
     height: 50px;  
-    width: 110px;  
+    width: 100px;  
     margin: -50px 0 0;  
     border: 1px solid #ddd;  
-    background: white;  
+    background: #fafafa;  
 	font-style: bold;
-	font-size: 12px;
-}  
+	font-size: 13px;
+	font-weight: 500;
+}
+
+#input_section input:hover{
+	background: #E5E9E9;
+}
+ 
   
 #edit textarea {
     height: 30px;  
@@ -104,8 +120,15 @@ p {
 .meta {  
     font-size: 0.8em;  
     font-style: italic;  
-    color: #888;  
+    color: #888;
+  	text-align: center;
 }  
+
+.meta2 {  
+    font-size: 0.8em;  
+    font-style: italic;  
+    color: #888;
+}
   
 .links {  
     font-size: 1.8em;  
@@ -120,14 +143,14 @@ p {
 }
 
 .lang_source {
-	font-size: 1.0em;    
-    color: #888;
+	font-size: 1.2em;    
+    color: #650D12;
 	
 }
 
 .lang_target {
-	font-size: 1.0em;    
-    color: #444;
+	font-size: 1.2em;    
+    color: #13570C;
 	
 }
 
@@ -155,27 +178,117 @@ p {
 
 #intro{
 	font-family: 'Bookman Old Style', serif;
-	font-size: 1.5em;
+	font-size: 1.3em;
 	text-align: center;
 	font-weight: 300
 }
 
+.player_name{
+	font-size: 1.4em;
+	font-family: 'Bookman Old Style', serif;
+	text-align: center;
+	
+}
 
-#general_links li
-{
-display: inline;
-list-style-type: none;
-padding-right: 20px;
+.player_rank{
+	font-size: 1.2em;
+	font-weight: 500;
+	color: #540004;
+}
+
+.player_score{
+	text-align: center;	
+}
+
+.the_score{
+	font-size: 1.2em;
+	font-weight: 500;
+	color: #D1030E;
+	
+}
+
+.trans_score{
+	color: #773438;
+}
+
+.translation{
+	font-weight: 600;
+	
 }
 
 
-#member_links li
-{
-display: inline;
-list-style-type: none;
-padding-right: 20px;
+.round {
+  -moz-border-radius:    10px;
+  -webkit-border-radius: 10px;
+  border-radius:         10px;
 }
 
+.info_form{
+	width: 250px;
+	padding-left: 200px;
+	
+}
+
+.info_form label{
+
+}
+
+.info_form p{
+	padding:4px 4px 4px 4px;	
+}
+
+.info_form input{
+
+	
+	float:right;
+}
+
+.info_form select{
+	
+	
+	float:right;
+}
+
+.lang_check{
+	width: 100px;
+	margin-left:70px;
+	
+}
+
+#register{
+	float:left;
+	margin-left:50px;
+	margin-top:5px;
+	height: 20px;  
+    width: 150px;    
+    border: 1px solid #ddd;  
+    background: #fafafa;  
+	font-style: bold;
+	font-size: 13px;
+	font-weight: 500;
+	
+}
+
+#register:hover{
+	background: #E5E9E9;
+}
+
+#time{
+	font-size: 1.2em;
+	font-weight: 600;
+	color: #D1030E;
+	
+}
+
+
+ul#main-nav {margin:0;padding:0px;float:left;width:100%;font-size:0.9em;position:absolute;}
+ul#main-nav li {margin:0;padding:0;list-style:none;float:left;margin:0 0.3em 0 0;width:10.7em;}
+ul#main-nav li a {text-decoration:none;display:block;padding:0.3em 0.5em;border:1px solid silver;color:#003;background:#fff;}
+ul#main-nav li a:hover, ul#main-nav	li a:focus {border:1px solid gray;color:#000;background:#fafafa;}
+ul#main-nav li ul {padding:0;display:none;}
+ul#main-nav li:hover ul {display:block;}
+ul#main-nav li ul li {float:none;}
+ul#main-nav li ul li a {font-size:0.9em;}
 
 
 

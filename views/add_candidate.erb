@@ -7,18 +7,20 @@
 <section id="input_section">  
   <form action="/add_candidate" method="post">  
     <textarea name="sentence" <%= value %>><%= @error_sentence if @error_sentence%></textarea>  
-    <input type="submit" value="Send to Tower">
+    <input type="submit" class="round" value="Send to Tower">
   	<label for="source">Source Language: </label>
 	<select name="source">
 		<option value="en">English</option>
 		<option value="es">Spanish</option>
 		<option value="ga">Irish</option>
+		<option value="fr">French</option>
 	</select>
 	<label for="target" id = "target">Target Language: </label>
 	<select name="target">
 		<option value="en">English</option>
 		<option value="es">Spanish</option>
 		<option value="ga">Irish</option>
+		<option value="fr">French</option>
 	</select>
   </form>  
 </section>

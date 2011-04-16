@@ -1,15 +1,14 @@
 <% position = 1%>
 
-<% @top_ten.each do |p| %>    
-	<p>  
+<% @top_ten.each do |p| %>
+<article>    
+	<p class = "player_name">  
       <%= position%>. <%= p.name %>  
     </p>  
-    <p>  
-      Rank: <%= p.rank %> 
-    </p>
-	<p>  
-      Total Score: <%= p.total_score %> 
+    <p class = "player_score">   
+      Total Score: <span class ="the_score"><%= p.total_score %></span>  Rank: <span class ="player_rank"><%= p.rank %></span>
     </p>
     <p class="meta">Joined: <%= p.joined_at %></p>
+</article>
    <% position += 1%>
 <% end %>

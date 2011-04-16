@@ -3,17 +3,33 @@
 <p><%= er%></p>
 <%end%>
 <%end%>
-<section>  
+<section class="info_form">  
   <form action="/register" method="post">  
     <p><label for="name">Name</label> <input type="text" id="name" name="name" /></p>
 	<p><label for="email">E-mail</label> <input type="text" id="email" name="email" /></p>
-	<p><label for="password">Password</label> <input type="text" id="password" name="password" /></p>
-  	<label for="mother_tongue">Mother Tongue: </label>
-	<select name="mother_tongue">
-		<option value="en">English</option>
-		<option value="es">Spanish</option>
-		<option value="ga">Irish</option>
-	</select>
-	<p ><input type="submit" value="Submit" /></p>
+	<p><label for="password">Password</label> <input type="password" id="password" name="password" /></p>
+	<p><label for="confirm">Confirm</label> <input type="password" id="confirm" name="confirm" /></p>
+  	<p>Select your languages (minimum of 2):</p>
+	<p class="lang_check">English<input type="checkbox" name="lang" value="en"></p>
+	<p class="lang_check">Spanish<input type="checkbox" name="lang" value="es"></p>
+	<p class="lang_check">Irish<input type="checkbox" name="lang" value="ga"></p>
+	<p class="lang_check">French<input type="checkbox" name="lang" value="fr"></p>
+	<p ><input type="submit" value="Register" id="register" class="round"/></p>
   </form>  
 </section>
+
+<!--
+<p>English<input type="checkbox" name="lang" value="en"></p>
+<p>Spanish<input type="checkbox" name="lang" value="es"></p>
+<p>Irish<input type="checkbox" name="lang" value="ga"></p>
+<p>French<input type="checkbox" name="lang" value="fr"></p>
+
+<label for="mother_tongue">Mother Tongue: </label>
+<select name="mother_tongue">
+	<option value="en">English</option>
+	<option value="es">Spanish</option>
+	<option value="ga">Irish</option>
+	<option value="fr">French</option>
+</select>
+
+--> 

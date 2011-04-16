@@ -7,6 +7,8 @@ module Language
       'Spanish'
     when 'ga'
       'Irish'
+    when 'fr'
+      'French'
     end
   end
   
@@ -20,6 +22,8 @@ module Language
       'Spanish'
     when 'ga'
       'Irish'
+    when 'fr'
+      'French'
     end
   end
   

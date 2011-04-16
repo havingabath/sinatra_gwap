@@ -465,16 +465,38 @@ end
 get '/new_chain/:id' do
   @l2attempt = L2attempt.get(params[:id])
   @candidate = @l2attempt.chain.candidate
-  @title = "Your Trans-mission"
-  erb :new_chain
+  if @player == @l2attempt.player
+    @title = "Your Trans-mission"
+    erb :new_chain
+  else
+    @title = "Not your chain"
+    erb :not_logged_in
+  end
 end
 
 get '/continue_chain/:id' do
   @chain = Chain.get(params[:id])
   @l1attempt = @chain.l1attempt
-  @title = 'Complete this Trans-mission'
-  erb :continue_chain
+  
+  if @player == @l1attempt.player
+    @title = 'Complete this Trans-mission'
+    erb :continue_chain
+  else
+    @title = "Not your chain"
+    erb :not_logged_in
+  end
 end
+
+get '/project' do
+  @title = "The Project"
+  erb :project
+end
+
+
+
+
+
+
   
 
   

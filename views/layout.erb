@@ -4,7 +4,9 @@
   <meta charset="utf8">  
   <title><%= @title + ' | BABEL' %></title>  
   <link href="/reset.css" rel="stylesheet">  
-  <link href="/style.css" rel="stylesheet">  
+  <link href="/style.css" rel="stylesheet">
+  <script src='http://rightjs.org/hotlink/right.js'></script> 
+    <script src='/custom.js'></script>
 </head>  
 <body>  
   <header>  
@@ -19,25 +21,38 @@
 		<% end %>
     </hgroup>  
   
- 	<div id="general_links">
-	<ul id="navlist">
-  		<li><%= link_to '/','Home', {:class=>'link',:id=>'home_link'} %></li>
-		<li><%= link_to '/register','Register', {:class=>'link'} %></li>
-		<li><%= link_to '/about','How to play', {:class=>'link'} %></li>
-		<li><%= link_to '/leaderboard','Leader board', {:class=>'link'} %></li>
-		<li><%= link_to '/add_candidate','Add Candidate', {:class=>'link'} %></li>
-	</ul>
-	</div>
-	<div id="member_links">
-	<ul>
-		<li><%= link_to '/display_candidates','My Candidates', {:class=>'link'} %></li>
-		<li><%= link_to '/display_chains','My Active Chains', {:class=>'link'} %></li>
-		<li><%= link_to '/new_chain','Start Chain', {:class=>'link'} %></li>
-		<li><%= link_to '/continue_chain','Continue Chain', {:class=>'link'} %></li>
-		<li><%= link_to '/display_scorecards','My Score Cards', {:class=>'link'} %></li>
-	</ul>
-  	</div>
 </header>
+
+<ul id="main-nav">
+ <li><a href="/">Home</a></li>
+ <li><a href="/about">New to Babel</a>
+  <ul>
+   <li><a href="/register">Register</a></li>
+   <li><a href="/about">How to play</a></li>
+   <li><a href="/project">The project</a></li>
+  </ul>
+ </li>
+ <li><a href="/add_candidate">Candidates</a>
+  <ul>
+   <li><a href="/add_candidate">Add Candidate</a></li>
+   <li><a href="/display_candidates">My Candidates</a></li>
+  </ul>
+ </li>
+ <li><a href="/display_chains">Chains</a>
+  <ul>
+   <li><a href="/display_chains">My Actives Chains</a></li>
+   <li><a href="/new_chain">Start a Chain</a></li>
+   <li><a href="/continue_chain">Continue a Chain</a></li>
+  </ul>
+ </li>
+ <li><a href="/leaderboard">Scores</a>
+  <ul>
+   <li><a href="/display_scorecards">My Score Cards</a></li>
+   <li><a href="/leaderboard">Leaderboard</a></li>
+  </ul>
+ </li>
+</ul>
+
   <div id="main">  
     <%= yield %>  
   </div>  

@@ -1,10 +1,10 @@
 <div id='flash' class='notice'>
   <%= flash[:notice] %>
 </div>
-<section>  
+<section class="info_form">  
   <form action="/login" method="post">  
     <p><label for="name">Name</label> <input type="text" id="name" name="name" /></p>
 	<p><label for="password">Password</label> <input type="password" id="password" name="password" /></p>
-	<p ><input type="submit" value="Log in" /></p>
+	<p ><input type="submit" value="Log in" id="register" class="round" /></p>
   </form>  
 </section>

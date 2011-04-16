@@ -1,18 +1,18 @@
 <% @candidates.each do |can| %>    
     <article>
-	<p>  
+	<p class="translation">  
       <%= can.sentence %>  
     </p>  
-    <p class = "lang_source">  
+    <p class = "meta2">  
       Source: <%= can.source_language%>      Target: <%= can.target_language%> 
     </p>
-    <p class="meta">
+    <p>
 	<%
 	chains = can.chains.select {|ch| ch.progress == 3}
 	chains.sort! {|ch1, ch2| ch2.score <=> ch1.score}
 	%>
     	<% chains[0..2].each do |ch| %>
-				Score(<%=ch.score%>) - <%= ch.l2attempt.sentence %></br>
+				<span class="trans_score">Score(<%=ch.score%>)</span> - <%= ch.l2attempt.sentence %></br>
 		<% end %>
     </p>  
   </article>  
