@@ -80,6 +80,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  crack
   datamapper
   dm-sqlite-adapter
   httparty

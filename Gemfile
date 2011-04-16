@@ -6,7 +6,7 @@ gem 'datamapper'
 gem	'rack-flash'
 gem 'json'
 gem 'crack'
-gem 'httparty'
+gem 'httparty', '0.7.4'
 gem 'to_lang'
 
 
