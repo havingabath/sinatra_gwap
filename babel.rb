@@ -119,16 +119,26 @@ class Player
   #rank the player is at based on their current score
   def rank
     case self.total_score 
-    when 0..999
-      "slave"
-    when 1000..1999
-      "serf"
-    when 2000..2999
-      "architect"
-    when 3000..3999
-      "prince"
-    when 4000..4999
-      "king"
+    when 0..1999
+      "Slave"
+    when 2000..3999
+      "Labourer"
+    when 4000..5999
+      "Servant"
+    when 6000..7999
+      "Artisan"
+    when 8000..9999
+      "Merchant"
+    when 10000..11999
+      "Military Officer"
+    when 12000..13999
+      "Palace Official"
+    when 14000..15999
+      "Architect"
+    when 16000..17999
+      "Temple Priest"
+    when 18000..19999
+      "King"
     else
       "God"
     end
