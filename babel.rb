@@ -327,7 +327,7 @@ get '/new_chain' do
       erb :apology
     else
       #Do not use candidates the player entered
-      candidates = Candidate.all(:player.not => @player)
+      candidates = Candidate.all(:player.not => @player) | Candidate.all(:player => nil)
       
       #only use candidates which the player speaks both languages
       suitable_candidates = candidates.select do |can|

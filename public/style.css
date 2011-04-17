@@ -369,6 +369,23 @@ h4{
 	font-weight: 500;
 }
 
+#the_game{
+	padding:5px;
+	font-family: 'Bookman Old Style', serif;
+	font-size: 1.1em;
+}
+
+#the_game h3{
+	font-size: 1.2em;
+}
+
+#the_game p{
+	padding:5px;
+}
+
+#the_game li{
+	padding:5px;
+}
 
 
 

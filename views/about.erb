@@ -1,2 +1,42 @@
-ABOUT
-THE RULES
+<div id="the_game">
+<h3>THE TOWER OF BABEL</h3>
+
+<p>The purpose of the game is to earn points by translating sentences from one language to another.
+Players cooperate in a chain, one translating from the source language to the target language and the next back to the source again.
+It is like a multilingual version of Chinese Whispers. The closer the sentence produced at the end of the chain to the original sentence, the more points earned.</p>
+
+<h3>HOW TO PLAY</h3>
+<p>
+<ol>
+<li>Players, or guests to the site, can <%= link_to '/add_candidate','add candidate', {:class=>'link'} %> sentences to the system by going to the <%= link_to '/add_candidate','add candidate', {:class=>'link'} %> section. These will usually be sentences that they have tried to translate elsewhere (i.e. On BabelFish or Google Translate), and have been unhappy with the results.</li>
+
+<li>To play the game, players must <%= link_to '/new_chain','start a chain', {:class=>'link'} %> or <%= link_to '/continue_chain','continue a chain', {:class=>'link'} %>. Each event provides a new translation challenge, with the latter building on the former to create a chain. Points will be rewarded to all players involved in a chain when it is fully completed, i.e. the chain has come full circle and has returned to the source language. The more similar the sentence produced at the end of the chain is to the original candidate sentence, the more points players will be rewarded.</li>
+</ol>
+</p>
+
+
+<h3>THE RULES</h3>
+<p>
+<ol>
+<li>Candidates must be created with different source and target languages.</li>
+
+<li>Candidates must be at least 5 words long.</li>
+
+<li>Players may not initiate chains on their own candidates or on candidates on which they have previously initiated chains.</li>
+
+<li>Players may only make one entry for each translation challenge. They may take as long as they want to complete it and may navigate away from the entry page, returning to it via the <%= link_to '/display_chains','my active chains', {:class=>'link'} %> section at a later time. They should be mindful that there are time bonuses on offer, which are calculated from the time the challenge was first issued.</li>
+
+<li>Players may be involved in up to 5 chains at anyone time, when they have reached this limit, no more translation challenges will be issued to them until they have made entries on their <%= link_to '/display_chains','active chains', {:class=>'link'} %>.</li>
+
+<li>Players are encouraged to use whatever translation aids they might have at their disposal, including the internet. Players should be aware that there are bonuses on offer for improving upon Google translate's attempt at the same translation chain.</li>
+
+<li>Players must always use the languages specified. The game will not accept sentences in which the language cannot be determined, and players will be penalised heavily should they attempt to cheat the system.</li>
+
+<li>A score card will only be issued for a chain when it has been fully completed. When score cards are created in a player's absence, they will be alerted the next time they log in.</li>
+
+<li>The site reserves the right to issue translations created, to players or guests who had input the original candidate, players can be view suggested translations in the <%= link_to '/display_candidates','my candidates', {:class=>'link'} %> section. The site also reserves the right to use translations produced as training data for machine translation algorithms.</li>
+
+<li>Players should be advised not to tempt the wrath of the tower by defying any of the above mentioned rules!!!!</li>
+</ol>
+</p>
+</div>

@@ -11,7 +11,7 @@ class ChainEvaluator
   
   def start_score_card
     @score_card = "<div id= 'score_card'><p><h2>Score Card for Chain #{@chain.id}</h2></p>"
-    @score_card << "<p><span id ='p1'>#{@chain.candidate.player.name}</span> first entered: <span id ='p1text'>#{@original}</span></p>"
+    @score_card << "<p><span id ='p1'>#{@chain.candidate.player ? @chain.candidate.player.name : 'guest'}</span> first entered: <span id ='p1text'>#{@original}</span></p>"
     @score_card << "<p><span id ='p2'>#{@chain.l2attempt.player.name}</span> translated that to: <span id ='p2text'>#{@chain.l2attempt.sentence}</span></p>"
     @score_card << "<p><span id ='p3'>#{@chain.l1attempt.player.name}</span> translated that back to: <span id ='p3text'>#{@submission}</span></p>"
   end
