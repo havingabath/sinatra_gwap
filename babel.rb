@@ -229,7 +229,7 @@ post '/add_candidate' do
     else                          #if it is a guest, just save it
       s.save 
     end     
-    flash[:notice] = "Your Candidate has been submitted to the tower"
+    flash[:notice] = "Your Candidate has been submitted to the tower."
     redirect '/confirmation'
   end  
 end
@@ -402,7 +402,7 @@ post '/submit_l2' do
       l2.submitted_at = Time.now
       l2.chain.progress = 1         #stage L2 attempt filled
       l2.save
-      flash[:notice] = "Your translation has been returned to the tower"
+      flash[:notice] = "Your translation has been returned to the tower. You shall recieve your score card, when the chain is continued and completed by another player."
       redirect '/confirmation'
     end
   end
