@@ -15,6 +15,7 @@ ToLang.start('AIzaSyBspFjGG3EQNn3C_6ZQCDTsUEj7xHTrCMA')
 DataMapper::Logger.new($stdout, :debug)
 DataMapper.setup(:default, ENV['DATABASE_URL'] || "sqlite3://#{Dir.pwd}/development.db")
 
+#db run in memory for testing
 configure :test do
   DataMapper.setup(:default, "sqlite::memory:")
 end
@@ -25,11 +26,14 @@ require 'language_detector.rb'
 require 'admin_tasks.rb'
 require 'helper.rb'
 require 'language_module.rb'
+require 'general.rb'
 
+#All the objects that follow include the Datamapper mixin, allowing them
+#to be used in conjucntion with the Datamapper ORM
 #Candidates are the sentences used as inputs for the game
 class Candidate  
   include DataMapper::Resource
-  include Language #mixin
+  include Language #mixin - methods to return full language name
   property :id, Serial  
   property :sentence, Text, :required => true  
   property :source, Text, :required => true #source language, two letter google code  
@@ -50,6 +54,9 @@ class Candidate
   end  
 end
 
+#a chain is a translation chain, one of the primary objects of the game
+#a candidate has many chains, meaning that many different group players
+#can attempt transalting the same candidate
 class Chain
   include DataMapper::Resource
   property :id, Serial
@@ -66,7 +73,7 @@ class Chain
   has n, :scorecards
 end
   
-#first link in the chain after candidate, L2attempt should be in target language
+#first link in the chain from candidate, L2attempt should be in target language of candidate
 class L2attempt
   include DataMapper::Resource
   property :sentence, Text
@@ -90,6 +97,7 @@ class L1attempt
   belongs_to :player
 end
 
+#represents a use of the website
 class Player
   include DataMapper::Resource
   property :id, Serial
@@ -97,9 +105,9 @@ class Player
   property :password, Text, :required => true, :length => 6..20
   property :email, Text, :required => true, :unique => true, :format => :email_address
   property :total_score, Integer, :default => 0
-  property :languages, Flag[ :en, :es, :ga, :fr ]
+  property :languages, Flag[ :en, :es, :ga, :fr ] #-like an enum but can have more than one selection
   property :joined_at, DateTime
-  validates_with_method :check_lang_number
+  validates_with_method :check_lang_number #makes sure players select at least 2 languages when registering
   
   has n, :candidates
   has n, :l1attempts
@@ -140,7 +148,7 @@ class Player
     when 18000..19999
       "King"
     else
-      "God"
+      "Nimrod"      #top_rank - Nimrod, leader of the Babylonians :)
     end
   end
   
@@ -149,17 +157,20 @@ class Player
     self.save
   end
   
+  #returns number chains for which a player has recieved sentences to translate but has not yet submitted
   def active_chains
     activel2s = self.l2attempts.select{|l2| l2.chain.progress == 0}
     activel1s = self.l1attempts.select{|l1| l1.chain.progress == 2}
     activel1s.size + activel2s.size
   end
   
+  #predicate, returns true if player speaks the language passed
   def speaks? lang
     self.languages.include?(lang.to_sym)
   end
 end
 
+#each completed chain will have 2 scorecards, 1 for each player
 class Scorecard
   include DataMapper::Resource
   property :id, Serial
@@ -170,25 +181,17 @@ class Scorecard
   belongs_to :player
   belongs_to :chain
 end
-  
+
+#resolve changes to DB  
 DataMapper.finalize.auto_upgrade!
 
 enable :sessions
 
-#checks to see if a playes is logged in using sessions
+#checks to see if a player is logged in using sessions, performed on every page load
 before do
   if session[:player] then @player = Player.get(session[:player]) end
 end
 
-get '/' do
-  @title = 'Home'
-  erb :home
-end
-
-get '/about' do
-  @title = 'The Tower of Babel: How to play'
-  erb :about
-end
 
 get '/add_candidate' do    
   @title = 'Add Candidate'
@@ -288,13 +291,6 @@ post '/register' do
     @errors = p.errors
     erb :register
   end  
-end
-
-get '/leaderboard' do
-  @players = Player.all :order => :total_score.desc
-  @top_ten = @players.first(10)
-  @title = 'Leaderboard'
-  erb :leaderboard
 end
 
 get '/login' do

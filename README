@@ -1,0 +1,14 @@
+To run the app first you must run the bundler to ensure you have all necessary gems
+on your machine, from within the folder run:
+
+bundle install
+
+then to run the app, from within the folder again run
+
+ruby -rubygems babel.rb
+
+The app should then be available locally in your browser at:
+
+localhost:4567
+
+
