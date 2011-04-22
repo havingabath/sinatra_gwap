@@ -1,3 +1,5 @@
+#general website REST
+
 get '/' do
   @title = 'Home'
   erb :home
@@ -13,4 +15,14 @@ get '/leaderboard' do
   @top_ten = @players.first(10)
   @title = 'Leaderboard'
   erb :leaderboard
+end
+
+get '/confirmation' do
+  @title = 'Confirmation'
+  erb :confirmation
+end
+
+get '/project' do
+  @title = "The Project"
+  erb :project
 end

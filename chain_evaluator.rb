@@ -4,6 +4,8 @@ class ChainEvaluator
     @chain = chain
     @original = @chain.candidate.sentence
     @submission = @chain.l1attempt.sentence
+    #the following two calls were made possible by including the to_lang and httparty gems
+    #it makes googles translate perform the same chain and assigns the result to @machine
     machine_l2 = @original.translate(@chain.candidate.target, :from => @chain.candidate.source)
     @machine = machine_l2.translate(@chain.candidate.source, :from => @chain.candidate.target)
     start_score_card

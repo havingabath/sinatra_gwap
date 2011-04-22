@@ -11,4 +11,27 @@ The app should then be available locally in your browser at:
 
 localhost:4567
 
+*NB - this app has been developed with ruby 1.8.7, (the stable version found pre installed on 
+all current macs!)
+
+1. fully commented Application files are all in the root folder, babel.rb being the first to look at. Also in the root are the Gemfile, config and development.db files.
+
+2. public folder contains the following
+	CSS style sheets, one borrowed (reset.css) and one I wrote myself (style.css)
+	Javascript - custom.js contains the script for the timer, I borrowed it but
+				it had to be adjusted to suit my needs, closure was required at the end
+				to make it recursive as I wanted to pass the startime with each call.
+	Image - the logo is in tower2.jpg
+	
+3. views - contains my embedded ruby files (.erb) - all of which I wrote myself except for the	
+			intial layout which i templated from someone else and adjusted to my needs.
+
+4. spec - This contains two test files containing one test each, I started this project
+			with the best of agile intentions to use TDD and BDD, I wrote one test and decided 
+			I just wasn't in the mood to learn a whole new testing framework. So I hacked
+			my way through it, shame on me (I probably should have removed the folder to
+			hide this fact)!
+			
+FINALLY - YOU CAN SEE THE APP LIVE AT babel.heroku.com
+providing their site isn't down, their service to non paying clients can be iffy!
 

@@ -1,3 +1,6 @@
+#I create this object using a request sent to the google language  detect API, I then have 3 methods
+#I can call to check info about the sentence supplied by the player, this object
+#is in place to prevent gaming of the system
 require 'rubygems'
 require 'json'
 require 'net/http'
